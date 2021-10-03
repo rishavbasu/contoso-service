@@ -1,11 +1,9 @@
 package org.rishav.contoso.service;
 
 import java.util.Map;
-import java.util.Set;
 
 import org.rishav.contoso.domain.Route;
 import org.rishav.graph.domain.Graph;
-import org.rishav.graph.domain.Node;
 import org.rishav.graph.domain.Vertex;
 
 public class ContosoGame {
@@ -35,7 +33,7 @@ public class ContosoGame {
 		if (route.length < 2)
 			return totalDistance; // TODO
 		else {
-			Vertex<String> start ;
+			Vertex<String> start;
 			Map<Vertex<String>, Integer> adjacentVertices;
 
 			for (int i = 0; i < route.length - 1; i++) {
@@ -54,5 +52,9 @@ public class ContosoGame {
 		}
 
 		return totalDistance;
+	}
+
+	public void getPaths(String source, String dest) {
+		landmarkGraph.printAllPaths(new Vertex<String>(source), new Vertex<String>(dest));
 	}
 }
