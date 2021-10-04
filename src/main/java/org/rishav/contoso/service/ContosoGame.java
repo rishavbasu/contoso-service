@@ -55,6 +55,6 @@ public class ContosoGame {
 	}
 
 	public void getPaths(String source, String dest) {
-		landmarkGraph.printAllPaths(new Vertex<String>(source), new Vertex<String>(dest), 2);
+		landmarkGraph.printAllPaths(new Vertex<String>(source), new Vertex<String>(dest), 10);
 	}
 }

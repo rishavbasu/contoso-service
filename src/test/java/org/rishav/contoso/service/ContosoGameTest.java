@@ -21,6 +21,10 @@ public class ContosoGameTest {
 		contosoGame.addDirectRoute(new Route("C", "E", 2));
 		contosoGame.addDirectRoute(new Route("A", "E", 4));
 		contosoGame.addDirectRoute(new Route("E", "B", 1));
+		
+//		contosoGame.addDirectRoute(new Route("B", "F", 1));
+//		contosoGame.addDirectRoute(new Route("F", "G", 1));
+//		contosoGame.addDirectRoute(new Route("G", "C", 1));
 	}
 
 	@Test

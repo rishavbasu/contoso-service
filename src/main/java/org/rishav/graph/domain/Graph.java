@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Stack;
 
 public class Graph<T, Q extends Number> {
 
@@ -47,9 +48,11 @@ public class Graph<T, Q extends Number> {
 		Map<Vertex<T>, Boolean> visited = new HashMap<Vertex<T>, Boolean>();
 		List<Vertex<T>> currentPath = new ArrayList<>();
 
-		 currentPath.add(source);
-		dfs(source, destination, visited, currentPath, depth);
-		System.out.println(currentPath);
+		currentPath.add(source);
+		//dfs(source, destination, visited, currentPath, depth + 1);
+		//System.out.println(currentPath);
+		
+		dfsWithoutRecursion(source, destination);
 	}
 
 	private void dfs(Vertex<T> source, Vertex<T> destination, Map<Vertex<T>, Boolean> visited,
@@ -60,20 +63,48 @@ public class Graph<T, Q extends Number> {
 
 		if (source.equals(destination)) {
 			System.out.println(currentPath);
-		} else if(currentDepth < depth){
+		} else if (depth > 0) {
 
 			Map<Vertex<T>, Q> adjacentVertices = getAdjacentVertices(source);
 			for (Vertex<T> vertex : adjacentVertices.keySet()) {
 				if (visited.get(vertex) == null || !visited.get(vertex)) {
 					currentPath.add(vertex);
-					dfs(vertex, destination, visited, currentPath, currentDepth++);
+					dfs(vertex, destination, visited, currentPath, depth - 1);
 					currentPath.remove(vertex);
 				}
 			}
 			currentPath.remove(source);
 		}
-		
+
 		visited.put(source, Boolean.FALSE);
+	}
+	
+	public void dfsWithoutRecursion(Vertex<T> start, Vertex<T> destination) {
+		List<Vertex<T>> currentPath = new ArrayList<>();
+		
+		Stack<Vertex<T>> stack = new Stack<Vertex<T>>();
+		Map<Vertex<T>, Boolean> visited = new HashMap<Vertex<T>, Boolean>();
+		stack.push(start);
+		while (!stack.isEmpty()) {
+			Vertex<T> current = stack.pop();
+			
+			if (visited.get(current) == null || !visited.get(current)) {
+				visited.put(current, Boolean.TRUE);
+				 currentPath.add(current);
+
+				Map<Vertex<T>, Q> adjacentVertices = getAdjacentVertices(current);
+				for (Vertex<T> dest : adjacentVertices.keySet()) {
+					if (destination.equals(dest)) {
+						System.out.println(currentPath);
+						currentPath.clear();
+						break;
+					}
+					if (visited.get(dest) == null || !visited.get(dest))
+						stack.push(dest);
+				}
+				visited.put(current, Boolean.FALSE);
+			}
+		}
 	}
 
 	@Override
