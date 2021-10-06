@@ -1,4 +1,4 @@
-name: Spring boot - EBS
+name: CI/CD - EBS
  
 on:
   push:
