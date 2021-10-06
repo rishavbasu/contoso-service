@@ -1,14 +1,17 @@
 package org.rishav.contoso.service;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.LinkedList;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.rishav.contoso.domain.Route;
+import org.rishav.contoso.service.exception.PathNotFoundException;
 
-public class ContosoGameTest {
+public class ContosoGameServiceImplTest {
 
-	ContosoGame contosoGame = new ContosoGameService();
+	ContosoGameService contosoGame = new ContosoGameServiceImpl();
 
 	@Before
 	public void setup() {
@@ -33,13 +36,20 @@ public class ContosoGameTest {
 		LinkedList<String> list = new LinkedList<String>();
 		list.add("A");
 		list.add("B");
-		System.out.println(contosoGame.calculateDistance(new String[] { "A", "E", "B", "C", "D" }));
-		System.out.println(contosoGame.getLandmarkGraph());
 	}
 
 	@Test
-	public void testGetPaths() {
-		contosoGame.getPaths("A", "C");
+	public void testCalculateDistance() throws PathNotFoundException {
+		assertEquals(12, contosoGame.calculateDistance(new String[] { "A", "B", "C" }).intValue());
 	}
 
+	@Test(expected = PathNotFoundException.class)
+	public void testCalculateDistanceNotFound() throws PathNotFoundException {
+		contosoGame.calculateDistance(new String[] { "A", "E", "D" });
+	}
+
+	@Test
+	public void testGetPaths() throws PathNotFoundException {
+		assertEquals(2, contosoGame.getPaths("A", "A").intValue());
+	}
 }

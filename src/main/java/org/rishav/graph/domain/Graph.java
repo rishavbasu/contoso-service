@@ -49,10 +49,10 @@ public class Graph<T, Q extends Number> {
 		List<Vertex<T>> currentPath = new ArrayList<>();
 
 		currentPath.add(source);
-		//dfs(source, destination, visited, currentPath, depth + 1);
-		//System.out.println(currentPath);
+		dfs(source, destination, visited, currentPath, depth + 1);
+		System.out.println(currentPath);
 		
-		dfsWithoutRecursion(source, destination);
+		//dfsWithoutRecursion(source, destination);
 	}
 
 	private void dfs(Vertex<T> source, Vertex<T> destination, Map<Vertex<T>, Boolean> visited,

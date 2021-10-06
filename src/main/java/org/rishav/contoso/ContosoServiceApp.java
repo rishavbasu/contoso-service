@@ -4,9 +4,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class ContosoServiceMain {
+public class ContosoServiceApp {
 
 	public static void main(String[] args) {
-		SpringApplication.run(ContosoServiceMain.class, args);
+		SpringApplication.run(ContosoServiceApp.class, args);
 	}
 }
