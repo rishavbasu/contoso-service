@@ -1,17 +1,18 @@
 package org.rishav.contoso.service;
 
-import org.rishav.contoso.domain.Route;
 import org.rishav.contoso.service.exception.PathNotFoundException;
 import org.rishav.graph.domain.Graph;
+import org.rishav.graph.domain.AllPathsBetweenNodes;
+import org.rishav.graph.domain.Edge;
 
 public interface ContosoGameService {
 
-	Graph<String, Integer> getLandmarkGraph();
+	Graph<String> getLandmarkGraph();
 
-	void addDirectRoute(Route route);
+	void addDirectRoute(Edge route);
 
-	default void addDirectRoutes(Route[] routes) {
-		for (Route route : routes) {
+	default void addDirectRoutes(Edge[] routes) {
+		for (Edge route : routes) {
 			addDirectRoute(route);
 		}
 	}
@@ -21,7 +22,7 @@ public interface ContosoGameService {
 	 * @return
 	 * @throws PathNotFoundException 
 	 */
-	Integer calculateDistance(String[] landmarks) throws PathNotFoundException;
+	Double calculateDistance(String[] landmarks) throws PathNotFoundException;
 
-	public Integer getPaths(String source, String dest);
+	public AllPathsBetweenNodes<String> findAllPathsBetweenNodes(String source, String dest, int intermediateLandmarks);
 }

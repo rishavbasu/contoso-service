@@ -1,12 +1,12 @@
-package org.rishav.contoso.domain;
+package org.rishav.graph.domain;
 
-public class Route {
+public class Edge {
 
 	private final String start;
 	private final String end;
-	private final int distance;
+	private final Double distance;
 
-	public Route(String start, String end, int distance) {
+	public Edge(String start, String end, Double distance) {
 		super();
 		this.start = start;
 		this.end = end;
@@ -21,7 +21,7 @@ public class Route {
 		return end;
 	}
 
-	public int getDistance() {
+	public Double getDistance() {
 		return distance;
 	}
 

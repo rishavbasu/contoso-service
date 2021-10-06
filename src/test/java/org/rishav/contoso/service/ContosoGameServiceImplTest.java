@@ -6,8 +6,8 @@ import java.util.LinkedList;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.rishav.contoso.domain.Route;
 import org.rishav.contoso.service.exception.PathNotFoundException;
+import org.rishav.graph.domain.Edge;
 
 public class ContosoGameServiceImplTest {
 
@@ -15,15 +15,15 @@ public class ContosoGameServiceImplTest {
 
 	@Before
 	public void setup() {
-		contosoGame.addDirectRoute(new Route("A", "B", 3));
-		contosoGame.addDirectRoute(new Route("B", "C", 9));
-		contosoGame.addDirectRoute(new Route("C", "D", 3));
-		contosoGame.addDirectRoute(new Route("D", "E", 6));
-		contosoGame.addDirectRoute(new Route("A", "D", 4));
-		contosoGame.addDirectRoute(new Route("D", "A", 5));
-		contosoGame.addDirectRoute(new Route("C", "E", 2));
-		contosoGame.addDirectRoute(new Route("A", "E", 4));
-		contosoGame.addDirectRoute(new Route("E", "B", 1));
+		contosoGame.addDirectRoute(new Edge("A", "B", 3D));
+		contosoGame.addDirectRoute(new Edge("B", "C", 9D));
+		contosoGame.addDirectRoute(new Edge("C", "D", 3D));
+		contosoGame.addDirectRoute(new Edge("D", "E", 6D));
+		contosoGame.addDirectRoute(new Edge("A", "D", 4D));
+		contosoGame.addDirectRoute(new Edge("D", "A", 5D));
+		contosoGame.addDirectRoute(new Edge("C", "E", 2D));
+		contosoGame.addDirectRoute(new Edge("A", "E", 4D));
+		contosoGame.addDirectRoute(new Edge("E", "B", 1D));
 
 //		contosoGame.addDirectRoute(new Route("B", "F", 1));
 //		contosoGame.addDirectRoute(new Route("F", "G", 1));
@@ -49,7 +49,7 @@ public class ContosoGameServiceImplTest {
 	}
 
 	@Test
-	public void testGetPaths() throws PathNotFoundException {
-		assertEquals(2, contosoGame.getPaths("A", "A").intValue());
+	public void testFindAllPathsBetweenNodes() {
+		assertEquals(2, contosoGame.findAllPathsBetweenNodes("A", "C", 2).getNumberOfRoutes().intValue());
 	}
 }
