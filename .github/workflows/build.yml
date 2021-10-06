@@ -27,5 +27,5 @@ jobs:
         application_name: contoso
         environment_name: Contoso-env
         version_label: ${{github.SHA}}
-        region: us-east-1
+        region: ap-south-1
         deployment_package: target/contoso-service-0.0.1-SNAPSHOT.jar
