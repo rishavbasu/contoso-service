@@ -1,7 +1,12 @@
 package org.rishav.contoso;
 
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
 public class ContosoServiceMain {
+
 	public static void main(String[] args) {
-		System.out.println("Hii");
+		SpringApplication.run(ContosoServiceMain.class, args);
 	}
 }

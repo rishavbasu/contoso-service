@@ -1,4 +1,4 @@
-name: Spring boot - EBS
+name: CI/CD - EBS
  
 on:
   push:
@@ -24,8 +24,8 @@ jobs:
       with:
         aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        application_name: pet-clinic
-        environment_name: PetClinic-env
+        application_name: contoso
+        environment_name: Contoso-env
         version_label: ${{github.SHA}}
         region: us-east-1
-        deployment_package: target/spring-petclinic-rest-2.2.5.jar
+        deployment_package: target/contoso-service-0.0.1.jar
