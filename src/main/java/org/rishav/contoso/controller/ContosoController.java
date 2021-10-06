@@ -16,6 +16,11 @@ public class ContosoController {
 
 	@Autowired
 	ContosoGame contosoGame;
+	
+	@RequestMapping(value = "/", method = RequestMethod.GET, produces = "application/json")
+    	public ResponseEntity<Void> getRoot() {
+        	return new ResponseEntity<>(HttpStatus.OK);
+   	 }
 
 	@PostMapping("/test")
 	public Integer calculateDistance(String[] route) {
