@@ -8,7 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.rishav.graph.Edge;
 import org.rishav.graph.exception.InvalidPathException;
-import org.rishav.graph.exception.NodeNotFoundException;
+import org.rishav.graph.exception.VertexNotFoundException;
 
 public class ContosoGameServiceImplTest {
 
@@ -40,17 +40,17 @@ public class ContosoGameServiceImplTest {
 	}
 
 	@Test
-	public void testCalculateDistance() throws InvalidPathException, NodeNotFoundException {
+	public void testCalculateDistance() throws InvalidPathException, VertexNotFoundException {
 		assertEquals(12, contosoGame.calculateDistance(new String[] { "A", "B", "C" }).intValue());
 	}
 
 	@Test(expected = InvalidPathException.class)
-	public void testCalculateDistanceNotFound() throws InvalidPathException, NodeNotFoundException {
+	public void testCalculateDistanceNotFound() throws InvalidPathException, VertexNotFoundException {
 		contosoGame.calculateDistance(new String[] { "A", "E", "D" });
 	}
 
 	@Test
-	public void testFindAllPathsBetweenNodes() throws NodeNotFoundException, InvalidPathException {
+	public void testFindAllPathsBetweenNodes() throws VertexNotFoundException, InvalidPathException {
 		assertEquals(2, contosoGame.findAllPathsBetweenNodes("A", "C", 2).getNumberOfRoutes().intValue());
 	}
 }

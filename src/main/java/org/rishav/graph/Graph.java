@@ -7,20 +7,29 @@ import java.util.Map;
 import java.util.Stack;
 
 import org.rishav.graph.exception.InvalidPathException;
-import org.rishav.graph.exception.NodeNotFoundException;
+import org.rishav.graph.exception.VertexNotFoundException;
 
 public class Graph<T> {
 
 	/**
 	 * Adjacency list of the graph
 	 */
-	private final Map<Vertex<T>, Map<Vertex<T>, Double>> adjacencyLists = new HashMap<>();
+	private final Map<T, Vertex<T>> vertices = new HashMap<>();
 
 	/**
 	 * @param v
 	 */
 	public void addVertex(Vertex<T> v) {
-		adjacencyLists.putIfAbsent(v, new HashMap<Vertex<T>, Double>());
+		vertices.putIfAbsent(v.getLabel(), v);
+	}
+
+	public Vertex<T> getVertex(T label) throws VertexNotFoundException {
+		Vertex<T> vertex = vertices.get(label);
+		if (vertex == null) {
+			throw new VertexNotFoundException("Node " + label + "does not exist");
+		}
+
+		return vertex;
 	}
 
 	/**
@@ -29,26 +38,28 @@ public class Graph<T> {
 	 * @param v1
 	 * @param v2
 	 * @param distance
+	 * @throws VertexNotFoundException
+	 * @throws InvalidPathException
 	 */
-	public void addEdge(Vertex<T> v1, Vertex<T> v2, double distance) {
-		// TODO add exception
-		adjacencyLists.get(v1).put(v2, distance);
+	public void addEdge(T v1, T v2, double distance) throws VertexNotFoundException, InvalidPathException {
+		if (v1.equals(v2)) {
+			throw new InvalidPathException("Source & destinations cant be same");
+		}
+
+		Node<T> adjacentNode = new Node<T>(getVertex(v2), distance);
+		getVertex(v1).getAdjacentNodes().add(adjacentNode);
 	}
 
 	/**
 	 * Returns adjacency list of a vertex.
 	 * 
-	 * @param data
+	 * @param label
 	 * @return
-	 * @throws NodeNotFoundException
+	 * @throws VertexNotFoundException
 	 */
-	public Map<Vertex<T>, Double> getAdjacentVertices(Vertex<T> v) throws NodeNotFoundException {
-		Map<Vertex<T>, Double> adjacencyList = adjacencyLists.get(v);
-		if (adjacencyList == null) {
-			throw new NodeNotFoundException("Node " + v + "does not exist");
-		}
+	public List<Node<T>> getAdjacentVertices(T label) throws VertexNotFoundException {
 
-		return adjacencyList;
+		return getVertex(label).getAdjacentNodes();
 	}
 
 	/**
@@ -59,30 +70,34 @@ public class Graph<T> {
 	 * @param destination
 	 * @param maxIntermediateNodes
 	 * @return
-	 * @throws NodeNotFoundException
+	 * @throws VertexNotFoundException
 	 * @throws InvalidPathException
 	 */
-	public allPathsBetweenNodes<T> findAllPathsBetweenNodes(Vertex<T> source, Vertex<T> destination,
-			int maxIntermediateNodes) throws NodeNotFoundException, InvalidPathException {
+	public AllPathsBetweenNodes<T> findAllPathsBetweenNodes(T source, T destination, int maxIntermediateNodes)
+			throws VertexNotFoundException, InvalidPathException {
+		
+		if (source.equals(destination)) {
+			throw new InvalidPathException("Source & destinations cant be same");
+		}
+		
+		Vertex<T> sourceVertex = getVertex(source);
+		Vertex<T> destinationVertex = getVertex(destination);
+
 		Map<Vertex<T>, Boolean> visited = new HashMap<Vertex<T>, Boolean>();
 		List<Vertex<T>[]> allPaths = new ArrayList<>();
 		List<Vertex<T>> currentPath = new ArrayList<>();
-		currentPath.add(source);
+		currentPath.add(sourceVertex);
 
-		dfsFindAllPaths(source, destination, visited, currentPath, allPaths, maxIntermediateNodes);
+		dfsFindAllPaths(sourceVertex, destinationVertex, visited, currentPath, allPaths, maxIntermediateNodes);
 
-		return new allPathsBetweenNodes<T>(allPaths);
+		return new AllPathsBetweenNodes<T>(allPaths);
 		// dfsWithoutRecursion(source, destination);
 	}
 
 	@SuppressWarnings("unchecked")
 	private void dfsFindAllPaths(Vertex<T> source, Vertex<T> destination, Map<Vertex<T>, Boolean> visited,
 			List<Vertex<T>> currentPath, List<Vertex<T>[]> allPaths, int maxIntermediateNodes)
-			throws NodeNotFoundException, InvalidPathException {
-
-		if (source.equals(destination)) {
-			throw new InvalidPathException("Source & destinations cant be same");
-		}
+			throws VertexNotFoundException, InvalidPathException {
 
 		visited.put(source, Boolean.TRUE); // to avoid cycle
 
@@ -91,13 +106,14 @@ public class Graph<T> {
 			currentPath = new ArrayList<Vertex<T>>();
 		} else if (maxIntermediateNodes >= 0) {
 
-			Map<Vertex<T>, Double> adjacentVertices = getAdjacentVertices(source);
-			for (Vertex<T> vertex : adjacentVertices.keySet()) {
-				if (visited.get(vertex) == null || !visited.get(vertex)) {
-					currentPath.add(vertex);
+			List<Node<T>> adjacentVertices = getAdjacentVertices(source.getLabel());
+			for (Node<T> node : adjacentVertices) {
+				Vertex<T> adjacntVertex = node.getAdjacntVertex();
+				if (visited.get(adjacntVertex) == null || !visited.get(adjacntVertex)) {
+					currentPath.add(adjacntVertex);
 
-					dfsFindAllPaths(vertex, destination, visited, currentPath, allPaths, maxIntermediateNodes - 1);
-					currentPath.remove(vertex);
+					dfsFindAllPaths(node.getAdjacntVertex(), destination, visited, currentPath, allPaths, maxIntermediateNodes - 1);
+					currentPath.remove(adjacntVertex);
 				}
 			}
 			currentPath.remove(source);
@@ -105,7 +121,7 @@ public class Graph<T> {
 		visited.put(source, Boolean.FALSE);
 	}
 
-	public void dfsWithoutRecursion(Vertex<T> start, Vertex<T> destination) throws NodeNotFoundException {
+	public void dfsWithoutRecursion(Vertex<T> start, Vertex<T> destination) throws VertexNotFoundException {
 		List<Vertex<T>> currentPath = new ArrayList<>();
 
 		Stack<Vertex<T>> stack = new Stack<Vertex<T>>();
@@ -135,7 +151,7 @@ public class Graph<T> {
 
 	@Override
 	public String toString() {
-		return "Graph [adjacencyLists=" + adjacencyLists + "]";
+		return "Graph [adjacencyLists=" + vertices + "]";
 	}
 
 }

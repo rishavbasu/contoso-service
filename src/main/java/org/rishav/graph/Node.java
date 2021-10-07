@@ -8,12 +8,12 @@ import java.util.Objects;
  * @author basur
  *
  */
-public class Node<T, Q extends Number> {
+public class Node<T> {
 
 	private final Vertex<T> adjacntVertex;
-	private Q distance;
+	private Double distance;
 
-	public Node(Vertex<T> adjacntVertex, Q distance) {
+	public Node(Vertex<T> adjacntVertex, Double distance) {
 		this.adjacntVertex = adjacntVertex;
 		this.distance = distance;
 	}
@@ -26,7 +26,7 @@ public class Node<T, Q extends Number> {
 		return adjacntVertex;
 	}
 
-	public Q getDistance() {
+	public Double getDistance() {
 		return distance;
 	}
 
@@ -43,7 +43,7 @@ public class Node<T, Q extends Number> {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Node<?, ?> other = (Node<?, ?>) obj;
+		Node<?> other = (Node<?>) obj;
 		return Objects.equals(adjacntVertex, other.adjacntVertex);
 	}
 

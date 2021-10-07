@@ -6,9 +6,9 @@ import javax.validation.constraints.NotEmpty;
 import org.rishav.contoso.domain.FindAllPathsRequest;
 import org.rishav.contoso.service.ContosoGameService;
 import org.rishav.graph.Edge;
-import org.rishav.graph.allPathsBetweenNodes;
+import org.rishav.graph.AllPathsBetweenNodes;
 import org.rishav.graph.exception.InvalidPathException;
-import org.rishav.graph.exception.NodeNotFoundException;
+import org.rishav.graph.exception.VertexNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,15 +46,15 @@ public class ContosoController {
 	@Operation(summary = "Calculate total distance from satrt to end landmark")
 	@PostMapping("/contoso/calculatedistance")
 	public Double calculateDistance(@RequestBody @NotEmpty String[] ladnmarks)
-			throws InvalidPathException, NodeNotFoundException {
+			throws InvalidPathException, VertexNotFoundException {
 
 		return contosoGame.calculateDistance(ladnmarks);
 	}
 
 	@Operation(summary = "Find routes between two landmarks with number of intermediate landmarks")
 	@PostMapping("/contoso/findAllPathsBetweenNodes")
-	public allPathsBetweenNodes<String> findAllPathsBetweenNodes(@RequestBody FindAllPathsRequest findAllPathsRequest)
-			throws InvalidPathException, NodeNotFoundException {
+	public AllPathsBetweenNodes<String> findAllPathsBetweenNodes(@RequestBody FindAllPathsRequest findAllPathsRequest)
+			throws InvalidPathException, VertexNotFoundException {
 
 		return contosoGame.findAllPathsBetweenNodes(findAllPathsRequest.getStart(), findAllPathsRequest.getEnd(),
 				findAllPathsRequest.getMaxIntermediateLandmarks());

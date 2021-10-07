@@ -2,17 +2,17 @@ package org.rishav.contoso.service;
 
 import org.rishav.graph.Edge;
 import org.rishav.graph.Graph;
-import org.rishav.graph.allPathsBetweenNodes;
+import org.rishav.graph.AllPathsBetweenNodes;
 import org.rishav.graph.exception.InvalidPathException;
-import org.rishav.graph.exception.NodeNotFoundException;
+import org.rishav.graph.exception.VertexNotFoundException;
 
 public interface ContosoGameService {
 
 	Graph<String> getLandmarkGraph();
 
-	void addDirectRoute(Edge route);
+	void addDirectRoute(Edge route) throws VertexNotFoundException, InvalidPathException;
 
-	default void addDirectRoutes(Edge[] routes) {
+	default void addDirectRoutes(Edge[] routes) throws VertexNotFoundException, InvalidPathException {
 		for (Edge route : routes) {
 			addDirectRoute(route);
 		}
@@ -24,10 +24,10 @@ public interface ContosoGameService {
 	 * @param route List of landmarks.
 	 * @return
 	 * @throws InvalidPathException
-	 * @throws NodeNotFoundException
+	 * @throws VertexNotFoundException
 	 */
-	Double calculateDistance(String[] landmarks) throws InvalidPathException, NodeNotFoundException;
+	Double calculateDistance(String[] landmarks) throws InvalidPathException, VertexNotFoundException;
 
-	public allPathsBetweenNodes<String> findAllPathsBetweenNodes(String source, String dest, int intermediateLandmarks)
-			throws NodeNotFoundException, InvalidPathException;
+	public AllPathsBetweenNodes<String> findAllPathsBetweenNodes(String source, String dest, int intermediateLandmarks)
+			throws VertexNotFoundException, InvalidPathException;
 }

@@ -1,7 +1,7 @@
 package org.rishav.contoso.service.exception;
 
 import org.rishav.graph.exception.InvalidPathException;
-import org.rishav.graph.exception.NodeNotFoundException;
+import org.rishav.graph.exception.VertexNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -17,9 +17,9 @@ public class GlobalExceptionHandler {
 		return new ResponseEntity<String>(invalidPathException.getMessage(), HttpStatus.NOT_FOUND);
 	}
 
-	@ExceptionHandler(value = NodeNotFoundException.class)
+	@ExceptionHandler(value = VertexNotFoundException.class)
 	@ResponseStatus(code = HttpStatus.NOT_FOUND)
-	public ResponseEntity<String> invalidPathException(NodeNotFoundException nodeNotFoundException) {
+	public ResponseEntity<String> invalidPathException(VertexNotFoundException nodeNotFoundException) {
 		return new ResponseEntity<String>(nodeNotFoundException.getMessage(), HttpStatus.NOT_FOUND);
 	}
 
