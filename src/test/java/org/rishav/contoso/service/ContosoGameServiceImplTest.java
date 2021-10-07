@@ -6,8 +6,9 @@ import java.util.LinkedList;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.rishav.contoso.service.exception.PathNotFoundException;
-import org.rishav.graph.domain.Edge;
+import org.rishav.graph.Edge;
+import org.rishav.graph.exception.InvalidPathException;
+import org.rishav.graph.exception.NodeNotFoundException;
 
 public class ContosoGameServiceImplTest {
 
@@ -39,17 +40,17 @@ public class ContosoGameServiceImplTest {
 	}
 
 	@Test
-	public void testCalculateDistance() throws PathNotFoundException {
+	public void testCalculateDistance() throws InvalidPathException, NodeNotFoundException {
 		assertEquals(12, contosoGame.calculateDistance(new String[] { "A", "B", "C" }).intValue());
 	}
 
-	@Test(expected = PathNotFoundException.class)
-	public void testCalculateDistanceNotFound() throws PathNotFoundException {
+	@Test(expected = InvalidPathException.class)
+	public void testCalculateDistanceNotFound() throws InvalidPathException, NodeNotFoundException {
 		contosoGame.calculateDistance(new String[] { "A", "E", "D" });
 	}
 
 	@Test
-	public void testFindAllPathsBetweenNodes() {
+	public void testFindAllPathsBetweenNodes() throws NodeNotFoundException, InvalidPathException {
 		assertEquals(2, contosoGame.findAllPathsBetweenNodes("A", "C", 2).getNumberOfRoutes().intValue());
 	}
 }

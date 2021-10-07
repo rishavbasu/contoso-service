@@ -1,4 +1,4 @@
-package org.rishav.graph.domain;
+package org.rishav.graph;
 
 import java.util.Objects;
 

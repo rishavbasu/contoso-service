@@ -1,10 +1,13 @@
-package org.rishav.graph.domain;
+package org.rishav.graph;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
+
+import org.rishav.graph.exception.InvalidPathException;
+import org.rishav.graph.exception.NodeNotFoundException;
 
 public class Graph<T> {
 
@@ -37,20 +40,30 @@ public class Graph<T> {
 	 * 
 	 * @param data
 	 * @return
+	 * @throws NodeNotFoundException
 	 */
-	public Map<Vertex<T>, Double> getAdjacentVertices(Vertex<T> v) {
-		// TODO add exception
-		return adjacencyLists.get(v);
+	public Map<Vertex<T>, Double> getAdjacentVertices(Vertex<T> v) throws NodeNotFoundException {
+		Map<Vertex<T>, Double> adjacencyList = adjacencyLists.get(v);
+		if (adjacencyList == null) {
+			throw new NodeNotFoundException("Node " + v + "does not exist");
+		}
+
+		return adjacencyList;
 	}
 
 	/**
-	 * Finds all paths between two nodes with specified number of maximum intermediate nodes.
+	 * Finds all paths between two nodes with specified number of maximum
+	 * intermediate nodes.
+	 * 
 	 * @param source
 	 * @param destination
 	 * @param maxIntermediateNodes
 	 * @return
+	 * @throws NodeNotFoundException
+	 * @throws InvalidPathException
 	 */
-	public AllPathsBetweenNodes<T> findAllPathsBetweenNodes(Vertex<T> source, Vertex<T> destination, int maxIntermediateNodes) {
+	public allPathsBetweenNodes<T> findAllPathsBetweenNodes(Vertex<T> source, Vertex<T> destination,
+			int maxIntermediateNodes) throws NodeNotFoundException, InvalidPathException {
 		Map<Vertex<T>, Boolean> visited = new HashMap<Vertex<T>, Boolean>();
 		List<Vertex<T>[]> allPaths = new ArrayList<>();
 		List<Vertex<T>> currentPath = new ArrayList<>();
@@ -58,13 +71,18 @@ public class Graph<T> {
 
 		dfsFindAllPaths(source, destination, visited, currentPath, allPaths, maxIntermediateNodes);
 
-		return new AllPathsBetweenNodes<T>(allPaths);
+		return new allPathsBetweenNodes<T>(allPaths);
 		// dfsWithoutRecursion(source, destination);
 	}
 
 	@SuppressWarnings("unchecked")
 	private void dfsFindAllPaths(Vertex<T> source, Vertex<T> destination, Map<Vertex<T>, Boolean> visited,
-			List<Vertex<T>> currentPath, List<Vertex<T>[]> allPaths, int maxIntermediateNodes) {
+			List<Vertex<T>> currentPath, List<Vertex<T>[]> allPaths, int maxIntermediateNodes)
+			throws NodeNotFoundException, InvalidPathException {
+
+		if (source.equals(destination)) {
+			throw new InvalidPathException("Source & destinations cant be same");
+		}
 
 		visited.put(source, Boolean.TRUE); // to avoid cycle
 
@@ -87,7 +105,7 @@ public class Graph<T> {
 		visited.put(source, Boolean.FALSE);
 	}
 
-	public void dfsWithoutRecursion(Vertex<T> start, Vertex<T> destination) {
+	public void dfsWithoutRecursion(Vertex<T> start, Vertex<T> destination) throws NodeNotFoundException {
 		List<Vertex<T>> currentPath = new ArrayList<>();
 
 		Stack<Vertex<T>> stack = new Stack<Vertex<T>>();

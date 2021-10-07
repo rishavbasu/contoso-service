@@ -1,9 +1,16 @@
 package org.rishav.contoso.domain;
 
+import javax.validation.constraints.NotEmpty;
+
 public class FindAllPathsRequest {
 
+	@NotEmpty
 	private final String start;
+
+	@NotEmpty
 	private final String end;
+
+	@NotEmpty
 	private final Integer maxIntermediateLandmarks;
 
 	public FindAllPathsRequest(String start, String end, Integer maxIntermediateLandmarks) {

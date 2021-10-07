@@ -1,9 +1,10 @@
 package org.rishav.contoso.service;
 
-import org.rishav.contoso.service.exception.PathNotFoundException;
-import org.rishav.graph.domain.Graph;
-import org.rishav.graph.domain.AllPathsBetweenNodes;
-import org.rishav.graph.domain.Edge;
+import org.rishav.graph.Edge;
+import org.rishav.graph.Graph;
+import org.rishav.graph.allPathsBetweenNodes;
+import org.rishav.graph.exception.InvalidPathException;
+import org.rishav.graph.exception.NodeNotFoundException;
 
 public interface ContosoGameService {
 
@@ -17,12 +18,16 @@ public interface ContosoGameService {
 		}
 	}
 
-	/** Calculates distance between landmarks via intermediate landmarks.
+	/**
+	 * Calculates distance between landmarks via intermediate landmarks.
+	 * 
 	 * @param route List of landmarks.
 	 * @return
-	 * @throws PathNotFoundException 
+	 * @throws InvalidPathException
+	 * @throws NodeNotFoundException
 	 */
-	Double calculateDistance(String[] landmarks) throws PathNotFoundException;
+	Double calculateDistance(String[] landmarks) throws InvalidPathException, NodeNotFoundException;
 
-	public AllPathsBetweenNodes<String> findAllPathsBetweenNodes(String source, String dest, int intermediateLandmarks);
+	public allPathsBetweenNodes<String> findAllPathsBetweenNodes(String source, String dest, int intermediateLandmarks)
+			throws NodeNotFoundException, InvalidPathException;
 }

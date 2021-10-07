@@ -2,11 +2,12 @@ package org.rishav.contoso.service;
 
 import java.util.Map;
 
-import org.rishav.contoso.service.exception.PathNotFoundException;
-import org.rishav.graph.domain.Graph;
-import org.rishav.graph.domain.AllPathsBetweenNodes;
-import org.rishav.graph.domain.Edge;
-import org.rishav.graph.domain.Vertex;
+import org.rishav.graph.Edge;
+import org.rishav.graph.Graph;
+import org.rishav.graph.Vertex;
+import org.rishav.graph.allPathsBetweenNodes;
+import org.rishav.graph.exception.InvalidPathException;
+import org.rishav.graph.exception.NodeNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -32,7 +33,7 @@ public class ContosoGameServiceImpl implements ContosoGameService {
 		landmarkGraph.addEdge(v1, v2, route.getDistance().doubleValue());
 	}
 
-	public Double calculateDistance(String[] landmarks) throws PathNotFoundException {
+	public Double calculateDistance(String[] landmarks) throws InvalidPathException, NodeNotFoundException {
 		double totalDistance = 0;
 		if (landmarks.length < 2)
 			return totalDistance; // TODO
@@ -47,7 +48,7 @@ public class ContosoGameServiceImpl implements ContosoGameService {
 
 				Double distance = adjacentVertices.get(next);
 				if (distance == null || distance == 0) {
-					throw new PathNotFoundException("Path Not Found"); // Intermediate landmark is not reachable
+					throw new InvalidPathException("Path Not Found"); // Intermediate landmark is not reachable
 				} else {
 					totalDistance += distance;
 				}
@@ -57,7 +58,9 @@ public class ContosoGameServiceImpl implements ContosoGameService {
 		return totalDistance;
 	}
 
-	public AllPathsBetweenNodes<String> findAllPathsBetweenNodes(String source, String dest, int intermediateLandmarks) {
-		return landmarkGraph.findAllPathsBetweenNodes(new Vertex<String>(source), new Vertex<String>(dest), intermediateLandmarks);
+	public allPathsBetweenNodes<String> findAllPathsBetweenNodes(String source, String dest, int intermediateLandmarks)
+			throws NodeNotFoundException, InvalidPathException {
+		return landmarkGraph.findAllPathsBetweenNodes(new Vertex<String>(source), new Vertex<String>(dest),
+				intermediateLandmarks);
 	}
 }
