@@ -34,8 +34,8 @@ public class ContosoController {
 	private ContosoGameService contosoGame;
 
 	@GetMapping("/")
-	public ResponseEntity<Void> healthCheck() {
-		return new ResponseEntity<>(HttpStatus.OK);
+	public String healthCheck() {
+		return "Welcome!!";
 	}
 
 	@Operation(summary = "Add all routes")
