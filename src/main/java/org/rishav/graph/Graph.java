@@ -67,7 +67,7 @@ public class Graph<T> {
 	 * @throws VertexNotFoundException
 	 * @throws InvalidPathException
 	 */
-	public allPathsBetweenNodes<T> findAllPathsBetweenNodes(Vertex<T> source, Vertex<T> destination,
+	public AllPathsBetweenNodes<T> findAllPathsBetweenNodes(Vertex<T> source, Vertex<T> destination,
 			int maxIntermediateNodes) throws VertexNotFoundException, InvalidPathException {
 		
 		if (source.equals(destination)) {
@@ -81,7 +81,7 @@ public class Graph<T> {
 
 		dfsFindAllPaths(source, destination, visited, currentPath, allPaths, maxIntermediateNodes);
 
-		return new allPathsBetweenNodes<T>(allPaths);
+		return new AllPathsBetweenNodes<T>(allPaths);
 		// dfsWithoutRecursion(source, destination);
 	}
 

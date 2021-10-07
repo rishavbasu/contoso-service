@@ -5,7 +5,7 @@ import java.util.Map;
 import org.rishav.graph.Edge;
 import org.rishav.graph.Graph;
 import org.rishav.graph.Vertex;
-import org.rishav.graph.allPathsBetweenNodes;
+import org.rishav.graph.AllPathsBetweenNodes;
 import org.rishav.graph.exception.InvalidPathException;
 import org.rishav.graph.exception.VertexNotFoundException;
 import org.springframework.stereotype.Service;
@@ -59,7 +59,7 @@ public class ContosoGameServiceImpl implements ContosoGameService {
 		return totalDistance;
 	}
 
-	public allPathsBetweenNodes<String> findAllPathsBetweenNodes(String source, String dest, int intermediateLandmarks)
+	public AllPathsBetweenNodes<String> findAllPathsBetweenNodes(String source, String dest, int intermediateLandmarks)
 			throws VertexNotFoundException, InvalidPathException {
 		return landmarkGraph.findAllPathsBetweenNodes(new Vertex<String>(source), new Vertex<String>(dest),
 				intermediateLandmarks);

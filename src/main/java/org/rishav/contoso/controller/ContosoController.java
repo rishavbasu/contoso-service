@@ -8,7 +8,7 @@ import javax.validation.constraints.NotEmpty;
 import org.rishav.contoso.domain.FindAllPathsRequest;
 import org.rishav.contoso.service.ContosoGameService;
 import org.rishav.graph.Edge;
-import org.rishav.graph.allPathsBetweenNodes;
+import org.rishav.graph.AllPathsBetweenNodes;
 import org.rishav.graph.exception.InvalidPathException;
 import org.rishav.graph.exception.VertexNotFoundException;
 import org.slf4j.Logger;
@@ -55,7 +55,7 @@ public class ContosoController {
 
 	@Operation(summary = "Find routes between two landmarks with number of intermediate landmarks")
 	@PostMapping("/contoso/findAllPathsBetweenNodes")
-	public allPathsBetweenNodes<String> findAllPathsBetweenNodes(@RequestBody FindAllPathsRequest findAllPathsRequest)
+	public AllPathsBetweenNodes<String> findAllPathsBetweenNodes(@RequestBody FindAllPathsRequest findAllPathsRequest)
 			throws InvalidPathException, VertexNotFoundException {
 
 		return contosoGame.findAllPathsBetweenNodes(findAllPathsRequest.getStart(), findAllPathsRequest.getEnd(),
