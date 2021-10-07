@@ -1,5 +1,7 @@
 package org.rishav.contoso.controller;
 
+import java.util.Arrays;
+
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 
@@ -8,7 +10,7 @@ import org.rishav.contoso.service.ContosoGameService;
 import org.rishav.graph.Edge;
 import org.rishav.graph.allPathsBetweenNodes;
 import org.rishav.graph.exception.InvalidPathException;
-import org.rishav.graph.exception.NodeNotFoundException;
+import org.rishav.graph.exception.VertexNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,21 +34,21 @@ public class ContosoController {
 	private ContosoGameService contosoGame;
 
 	@GetMapping("/")
-	public ResponseEntity<Void> getRoot() {
+	public ResponseEntity<Void> healthCheck() {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
 	@Operation(summary = "Add all routes")
 	@PostMapping("/contoso/addroutes")
-	public void addDiretRoutes(@RequestBody(required = true) @Valid Edge[] edges) {
+	public void addDiretRoutes(@RequestBody(required = true) @Valid Edge[] edges) throws VertexNotFoundException {
 		contosoGame.addDirectRoutes(edges);
-		LOGGER.info("Routes added to graph :: {}", edges);
+		LOGGER.info("Routes added to graph :: {}", Arrays.toString(edges));
 	}
 
 	@Operation(summary = "Calculate total distance from satrt to end landmark")
 	@PostMapping("/contoso/calculatedistance")
-	public Double calculateDistance(@RequestBody @NotEmpty String[] ladnmarks)
-			throws InvalidPathException, NodeNotFoundException {
+	public Double calculateDistance(@RequestBody(required = true) @NotEmpty String[] ladnmarks)
+			throws InvalidPathException, VertexNotFoundException {
 
 		return contosoGame.calculateDistance(ladnmarks);
 	}
@@ -54,7 +56,7 @@ public class ContosoController {
 	@Operation(summary = "Find routes between two landmarks with number of intermediate landmarks")
 	@PostMapping("/contoso/findAllPathsBetweenNodes")
 	public allPathsBetweenNodes<String> findAllPathsBetweenNodes(@RequestBody FindAllPathsRequest findAllPathsRequest)
-			throws InvalidPathException, NodeNotFoundException {
+			throws InvalidPathException, VertexNotFoundException {
 
 		return contosoGame.findAllPathsBetweenNodes(findAllPathsRequest.getStart(), findAllPathsRequest.getEnd(),
 				findAllPathsRequest.getMaxIntermediateLandmarks());

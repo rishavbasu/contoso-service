@@ -7,7 +7,7 @@ import org.rishav.graph.Graph;
 import org.rishav.graph.Vertex;
 import org.rishav.graph.allPathsBetweenNodes;
 import org.rishav.graph.exception.InvalidPathException;
-import org.rishav.graph.exception.NodeNotFoundException;
+import org.rishav.graph.exception.VertexNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -24,8 +24,9 @@ public class ContosoGameServiceImpl implements ContosoGameService {
 	 * land mark graph.
 	 * 
 	 * @param route
+	 * @throws VertexNotFoundException 
 	 */
-	public void addDirectRoute(Edge route) {
+	public void addDirectRoute(Edge route) throws VertexNotFoundException {
 		Vertex<String> v1 = new Vertex<>(route.getStart());
 		Vertex<String> v2 = new Vertex<>(route.getEnd());
 		landmarkGraph.addVertex(v1);
@@ -33,10 +34,10 @@ public class ContosoGameServiceImpl implements ContosoGameService {
 		landmarkGraph.addEdge(v1, v2, route.getDistance().doubleValue());
 	}
 
-	public Double calculateDistance(String[] landmarks) throws InvalidPathException, NodeNotFoundException {
+	public Double calculateDistance(String[] landmarks) throws InvalidPathException, VertexNotFoundException {
 		double totalDistance = 0;
 		if (landmarks.length < 2)
-			return totalDistance; // TODO
+			throw new InvalidPathException("At least two landmarks should be passed");
 		else {
 			Vertex<String> start;
 			Map<Vertex<String>, Double> adjacentVertices;
@@ -59,7 +60,7 @@ public class ContosoGameServiceImpl implements ContosoGameService {
 	}
 
 	public allPathsBetweenNodes<String> findAllPathsBetweenNodes(String source, String dest, int intermediateLandmarks)
-			throws NodeNotFoundException, InvalidPathException {
+			throws VertexNotFoundException, InvalidPathException {
 		return landmarkGraph.findAllPathsBetweenNodes(new Vertex<String>(source), new Vertex<String>(dest),
 				intermediateLandmarks);
 	}
